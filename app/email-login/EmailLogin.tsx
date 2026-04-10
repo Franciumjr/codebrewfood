@@ -16,23 +16,8 @@ export default function EmailLogin({ user }: EmailLoginProps) {
 
   return (
     <form>
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen">
         <div className="flex items-center bg-muted p-1 rounded-md">
-        
-          {/* Login */}
-          <button
-            type="button"
-            onClick={() => setMode("login")}
-            className={cn(
-              "px-4 py-2 rounded-sm text-sm transition",
-              mode === "login"
-                ? "bg-background shadow text-foreground"
-                : "text-muted-foreground"
-            )}
-          >
-            Login
-          </button>
-
           {/* Signup */}
           <button
             type="button"
@@ -46,6 +31,25 @@ export default function EmailLogin({ user }: EmailLoginProps) {
           >
             Sign up
           </button>
+
+          {/* Login */}
+          <button
+            type="button"
+            onClick={() => setMode("login")}
+            className={cn(
+              "px-4 py-2 rounded-sm text-sm transition",
+              mode === "login"
+                ? "bg-background shadow text-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            Login
+          </button>
+        </div>
+        <div className="flex items-center justify-center">
+          <h3>
+            {mode === "signup" ? "Create an account" : "Log in to your account"}
+          </h3>
         </div>
       </div>
     </form>
