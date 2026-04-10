@@ -2,6 +2,8 @@
 
 import { User } from "@supabase/supabase-js"
 import { useState } from "react"
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 type EmailLoginProps = {
   user: User | null;
@@ -13,8 +15,39 @@ export default function EmailLogin({ user }: EmailLoginProps) {
   const [mode, setMode] = useState("signup")
 
   return (
-    <div>
-        EmailLogin
-    </div>
+    <form>
+      <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center bg-muted p-1 rounded-md">
+        
+          {/* Login */}
+          <button
+            type="button"
+            onClick={() => setMode("login")}
+            className={cn(
+              "px-4 py-2 rounded-sm text-sm transition",
+              mode === "login"
+                ? "bg-background shadow text-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            Login
+          </button>
+
+          {/* Signup */}
+          <button
+            type="button"
+            onClick={() => setMode("signup")}
+            className={cn(
+              "px-4 py-2 rounded-sm text-sm transition",
+              mode === "signup"
+                ? "bg-background shadow text-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            Sign up
+          </button>
+        </div>
+      </div>
+    </form>
   )
 }
