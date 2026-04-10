@@ -10,11 +10,7 @@ const page = () => {
         <Link href="/"><ChevronLeft /></Link>
       </div>
       <div className="flex items-center justify-center h-screen">
-        <Link href="/email-login">
-          <Button variant="outline" size="lg" className="content-center">
-            Sign up/log in with email
-          </Button>
-        </Link>
+        Test
       </div>
     </div>
   )
