@@ -53,8 +53,8 @@ const Sidebar = () => {
             {/**rendering sidebar content */}
             {sidebars.map((item) => {
                 return (
-                    <div key={item.title} className='flex gap-2.5 p-2'>
-                        <Link className=' flex items-center gap-2 hover:bg-zinc-200 transition-all rounded-sm p-2 w-full text-nowrap' href={item.href}>
+                    <div key={item.title} className='flex gap-2.5 p-2 transition-all '> 
+                        <Link className=' flex items-center gap-2 hover:bg-zinc-200 transition-all rounded-sm p-2 w-full text-nowrap ' href={item.href}>
                             <item.icon />
                             <span className={isExpanded ? 'block' : 'hidden'}>
                                 {item.title}
