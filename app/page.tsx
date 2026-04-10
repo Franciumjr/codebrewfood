@@ -1,19 +1,14 @@
+"use client"
 import { ModeToggle } from "@/components/ModeToggle"
 import Sidebar from "@/components/ui/sidebar"
-import {SignIn, SignInButton, SignOutButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
-    <div>
+    <div className="flex justify-between min-h-screen">
       <Sidebar></Sidebar>
+      <div className="flex gap-2">
       <ModeToggle></ModeToggle>
-        <SignInButton>
-          <Button>Sign In</Button>
-        </SignInButton>
-        <SignOutButton>
-          <Button>Sign Out</Button>
-        </SignOutButton>
+        </div>
     </div>
   )
 }

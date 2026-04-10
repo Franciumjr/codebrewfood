@@ -1,8 +1,11 @@
+"use client"
+
 import React from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { House, Search, Bell, Plus, User, Settings } from 'lucide-react'
 
-
-import {House,Search,Bell,Plus,User,Settings} from 'lucide-react'
+// sidebar content
 const sidebars = [
     {
         title: "Home",
@@ -37,18 +40,31 @@ const sidebars = [
 ]
 
 
-const sidebar = () => {
-  return (  
-    <div className='flex flex-col'>
-        {sidebars.map((sidebar)=>{
-            return(
-                <div key={sidebar.title} className='flex gap-2.5 p-2'>
-                    <Link href={sidebar.href}>{sidebar.title}<sidebar.icon /></Link>
-                </div>
-            )
-        })}
-    </div>
-  )
+
+const Sidebar = () => {
+    const [isExpanded, setIsExpanded] = useState(false)
+
+    return (
+        <div 
+            className='flex flex-col w-fit'
+            onMouseEnter={() => setIsExpanded(true)}
+            onMouseLeave={() => setIsExpanded(false)}
+        >
+            {/**rendering sidebar content */}
+            {sidebars.map((item) => {
+                return (
+                    <div key={item.title} className='flex gap-2.5 p-2'>
+                        <Link className=' flex items-center gap-2 hover:bg-zinc-200 transition-all rounded-sm p-2 w-full text-nowrap' href={item.href}>
+                            <item.icon />
+                            <span className={isExpanded ? 'block' : 'hidden'}>
+                                {item.title}
+                            </span>
+                        </Link>
+                    </div>
+                )
+            })}
+        </div>
+    )
 }
 
-export default sidebar
+export default Sidebar
