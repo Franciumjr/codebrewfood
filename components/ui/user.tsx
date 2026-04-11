@@ -1,23 +1,14 @@
 import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+
 const User = () => {
   return (
-    <div className='flex w-2xs'>
+    <div className='flex w-2xs gap-4'>
+        <img className='rounded-full' src="https://picsum.photos/id/237/50/50" alt="" />
+        <div>
+            <h1 className='font-semibold'>Diddy Sahur</h1>
+            <p className='text-zinc-500'>@diddysahur</p>
+        </div>
         
-        <Card size='sm' className='border-0 w-6xl'>
-            <div>
-                <img className='w-md rounded-full' src="https://picsum.photos/id/237/50/50" alt="" />
-            </div>
-
-            <CardHeader className='font-semibold'>Diddy Sahur</CardHeader>
-            <CardDescription>@diddysahur</CardDescription>
-        </Card>
     </div>
 
   )

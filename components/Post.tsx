@@ -91,7 +91,7 @@ const SinglePost = ({ post }: { post: any }) => {
     const [likedCounter, setLikedCounter] = useState(Number(post.likes));
 
     return (
-        <div className=' w-64 h-[70vh] md:w-128 md:h-[100vh] mt-24 scroll-smooth'>
+        <div className=' w-64 h-[70vh] md:w-128 md:h-[100vh] mt-4 scroll-smooth'>
             <img src={post.img} alt="" className=' cursor-pointer rounded-3xl brightness-50 w-full aspect-square object-cover' />
             <div className='text-white flex justify-center gap-8 translate-y-[-150%] translate-x-1 md:translate-x-0'>
                 <h1 className=' text-2xl font-bold'>{post.name}</h1>
@@ -126,13 +126,13 @@ const SinglePost = ({ post }: { post: any }) => {
 
 const Post = () => {
     return (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full mt-24">
             {posts.map((post) => (
-                <>
-                <User></User>
-                <SinglePost key={post.img} post={post} />
-                </>
-            ))}
+                <div key={post.img} className="flex flex-col items-start w-64 md:w-128 mt-24">
+                    <User></User>
+                    <SinglePost post={post} />
+                </div>
+                ))}
         </div>
     )
 }
