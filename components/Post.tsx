@@ -19,8 +19,8 @@ const SinglePost = ({ post }: { post: any }) => {
 
     return (
         <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth'>
-            <img src={post.txtImageURL} alt={post.txtTitle} className='cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
-            <div className='text-white flex justify-center gap-8 translate-y-[-150%] translate-x-1 md:translate-x-0'>
+            <img src={post.txtImageURL} alt={post.txtTitle} className='mb-4 cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
+            <div className='text-white flex justify-between gap-8 translate-x-1 md:translate-x-0 my-4'>
                 <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
                 <div className='flex gap-2'>
                     <Timer />
@@ -28,7 +28,7 @@ const SinglePost = ({ post }: { post: any }) => {
                     <p className='text-md'>{post.intTime} min</p> 
                 </div>
             </div>
-            <div className="flex justify-around ">
+            <div className="flex justify-around items-center">
                 <div className='flex gap-2 items-center cursor-pointer'
                     onClick={() => {
                         setLike(!like);
