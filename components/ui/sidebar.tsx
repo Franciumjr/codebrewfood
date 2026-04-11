@@ -55,7 +55,7 @@ const Sidebar = () => {
             {sidebars.map((item) => {
                 return (
                     <div key={item.title} className='flex gap-2.5 p-2 transition-all flex-1 md:flex-none'> 
-                        <Link className='flex justify-center md:justify-start items-center gap-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all rounded-sm p-2 w-full text-nowrap' href={item.href}>
+                        <Link className='flex justify-center md:justify-start items-center gap-4 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all rounded-sm p-2 w-full text-nowrap' href={item.href}>
                             <item.icon />
                             <span className={isExpanded ? 'hidden md:block' : 'hidden'}>
                                 {item.title}

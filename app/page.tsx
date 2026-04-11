@@ -10,7 +10,7 @@ export default function Page() {
         <Sidebar></Sidebar> {/**sidebar */}
       </div>
       <Post></Post>
-      <div className="fixed top-4 right-4 z-50 md:static md:z-auto flex gap-2 md:p-4 lg:p-0">
+      <div className="fixed top-4 right-4 z-50 md:z-auto flex gap-2 md:m-4 lg:p-0">
         <ModeToggle></ModeToggle> {/**light / dark mode */}
       </div>
     </div>
