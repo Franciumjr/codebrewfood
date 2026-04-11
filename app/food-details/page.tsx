@@ -4,7 +4,7 @@ import { ModeToggle } from '@/components/ModeToggle'
 import { ChevronLeft, Heart, Bookmark, Timer, Users, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 
-// Page props interface for Next.js Server Components with search parameters
+// page props interface for Next.js Server Components with search parameters
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -57,9 +57,9 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
       
       <div className="max-w-5xl mx-auto px-4 py-20 flex flex-col gap-10">
         
-        {/* Header Section */}
+        {/* header section */}
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            {/* Conditional handling since Image address may not exist if it wasn't added to Supabase table schema */}
+            {/* conditional handling */}
             {imageUrl ? (
                 <img src={imageUrl} alt={post.txtTitle || "Recipe Image"} className="w-full md:w-1/2 aspect-square object-cover rounded-3xl" />
             ) : (
@@ -76,7 +76,7 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
                 <div className="flex flex-wrap gap-8 mt-4 border-y py-6 border-zinc-200 dark:border-zinc-800">
                     <div className="flex items-center gap-3 text-lg">
                         <Timer className="w-7 h-7 text-orange-500" />
-                        <span className="font-semibold">{post.intTime || 0} min prep</span>
+                        <span className="font-semibold">{post.intTime || 0} min</span>
                     </div>
                     <div className="flex items-center gap-3 text-lg">
                         <Users className="w-7 h-7 text-green-500" />
@@ -86,11 +86,11 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
 
                 <div className="flex gap-10 mt-auto pt-6">
                     <div className="flex items-center gap-3">
-                        <Heart className="w-8 h-8 text-red-500 fill-red-500" />
+                        <Heart className="w-8 h-8 text-white" />
                         <span className="text-2xl font-bold">{post.intLikes || 0}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Bookmark className="w-8 h-8 text-blue-500 fill-blue-500" />
+                        <Bookmark className="w-8 h-8 text-white" />
                         <span className="text-2xl font-bold">{post.intBookmarks || 0}</span>
                     </div>
                 </div>
@@ -99,7 +99,7 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
 
         {/* Recipe Body text fields */}
         <div className="flex flex-col md:flex-row gap-12 mt-8">
-            <div className="flex-1 flex w-[30vw] h- flex-col gap-6">
+            <div className="flex-1 flex w-[90vw] md:w-[30vw] h-fit md:h-fit flex-col gap-6">
                 <h2 className="text-3xl font-semibold mb-2 pb-2 inline-flex items-center border-b">
                     Ingredients
                 </h2>
@@ -108,7 +108,7 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
                 </div>
             </div>
 
-            <div className="flex w-[40vw] h-[40vw] flex-col gap-6">
+            <div className="flex w-[90vw] md:w-[40vw] h-fit md:h-[40vw] flex-col gap-6">
                 <h2 className="text-3xl font-semibold mb-2 pb-2 inline-flex items-center border-b">
                     Instructions
                 </h2>
