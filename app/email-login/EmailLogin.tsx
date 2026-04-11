@@ -43,7 +43,7 @@ export default function EmailLogin({ user }: EmailLoginProps) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen gap-4">
           <div className="flex items-center bg-muted p-1 rounded-md">
             {/* Signup */}
             <button
