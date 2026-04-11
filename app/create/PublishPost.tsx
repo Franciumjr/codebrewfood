@@ -100,7 +100,11 @@ export default function PublishPost({ user }: PublishPostProps) {
             }
         );
 
-        if (!res.ok) throw new Error("Cloudinary upload failed");
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.error("CLOUDINARY ERROR DETAILS:", errorData);
+            throw new Error(errorData.error?.message || "Cloudinary upload failed");
+        }
         
         const data = await res.json();
         return data.secure_url;
