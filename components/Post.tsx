@@ -20,7 +20,7 @@ const SinglePost = ({ post }: { post: any }) => {
 
     return (
         <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth flex flex-col'>
-            <div className='flex gap-4 justify-between items-center my-6'>
+            <div className='flex gap-4 justify-around items-center my-6'>
                 <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
                 <div className='flex gap-2 items-center'>
                     <Timer></Timer>
