@@ -6,12 +6,14 @@ import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Card, CardFooter } from "@/components/ui/card"
+
 
 type EmailLoginProps = {
   user: User | null;
 }
 
-type Mode = "signup" | "login"
+export type Mode = "signup" | "login"
 
 export default function EmailLogin({ user }: EmailLoginProps) {
   const [mode, setMode] = useState("signup")
@@ -52,19 +54,19 @@ export default function EmailLogin({ user }: EmailLoginProps) {
       listener?.subscription.unsubscribe()
     }
   }, [supabase])
-  
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (mode === "signup") {
-      const {error} = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({ email, password })
       if (error) {
         setStatus(error.message)
       } else {
-        setStatus("Signup successful! Please check your email for a confirmation link.") 
+        setStatus("Signup successful! Please check your email for a confirmation link.")
       }
     } else {
-      const {error} = await supabase.auth.signInWithPassword({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
         setStatus(error.message)
       } else {
@@ -75,94 +77,115 @@ export default function EmailLogin({ user }: EmailLoginProps) {
 
   return (
     <>
-      {!currentUser && (
-        <>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col items-center justify-center h-screen">
-            <div className="flex items-center bg-muted p-1 rounded-md">
-              {/* Signup */}
-              <button
-                type="button"
-                onClick={() => setMode("signup")}
-                className={cn(
-                  "px-4 py-2 rounded-sm text-sm transition",
-                  mode === "signup"
-                    ? "bg-background shadow text-foreground"
-                    : "text-muted-foreground"
-                )}
-              >
-                Sign up
-              </button>
+      <Card className="flex flex-col text-center justify-center items-center gap-6">
 
-              {/* Login */}
-              <button
-                type="button"
-                onClick={() => setMode("login")}
-                className={cn(
-                  "px-4 py-2 rounded-sm text-sm transition",
-                  mode === "login"
-                    ? "bg-background shadow text-foreground"
-                    : "text-muted-foreground"
-                )}
-              >
-                Login
-              </button>
+        {/* User who has not logged in */}
+        {!currentUser && (
+          <>
+            <form className="" onSubmit={handleSubmit}>
+              <div className="flex flex-col items-center gap-6 w-full max-w-sm flex-grow p-12">
+                <div className="flex items-center bg-muted p-1 rounded-md gap-10 my-4">
+                  {/* Signup */}
+                  <button
+                    type="button"
+                    onClick={() => setMode("signup")}
+                    className={cn(
+                      "px-4 py-2 rounded-sm text-sm transition",
+                      mode === "signup"
+                        ? "bg-background shadow text-foreground"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    Sign up
+                  </button>
+
+                  {/* Login */}
+                  <button
+                    type="button"
+                    onClick={() => setMode("login")}
+                    className={cn(
+                      "px-4 py-2 rounded-sm text-sm transition",
+                      mode === "login"
+                        ? "bg-background shadow text-foreground"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    Login
+                  </button>
+                </div>
+                <div className="flex flex-col items-center justify-center gap-6 w-full">
+                  <h3>
+                    <b>{mode === "signup" ? "Create an account" : "Log in to your account"}</b>
+                  </h3>
+                  <label className="w-full text-left">
+                    Email
+                    <Input
+                      className="mt-2"
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      required
+                      placeholder="youremail@example.com"
+                    />
+                  </label>
+                  <label className="w-full text-left">
+                    Password
+                    <Input
+                      className="mt-2"
+                      type="password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      required
+                      minLength={6}
+                      placeholder="Password must be at least 6 characters"
+                    />
+                  </label>
+                    
+                </div>
+              </div>
+              <CardFooter className="w-full flex flex-col gap-10 mt-auto">
+                      <Button type="submit" className="w-full">
+                        {mode === "signup" ? "Sign Up" : "Login"}
+                      </Button>
+                  </CardFooter>
+            </form>
+          </>
+        )}
+
+        {/** logged In User */}
+        {currentUser && (
+          <>
+            <div className="flex flex-col items-center gap-6 w-full max-w-sm p-12 flex-grow">
+              <p>Welcome, {currentUser.email}!</p>
+              <label>
+                Username
+                <Input
+                className="mt-5"
+                  type="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  required
+                  placeholder="Will show email if left blank"
+                />
+              </label>
+
+              {status && (<p>{status}</p>)}
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <h3>
-                <b>{mode === "signup" ? "Create an account" : "Log in to your account"}</b>
-              </h3>
-              <label>
-                Email
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                  placeholder="youremail@example.com"
-                />
-              </label>
-              <label>
-                Password
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  minLength={6}
-                  placeholder="Password must be at least 6 characters"
-                />
-              </label>
-              <Button type="submit" className="w-full">
-                {mode === "signup" ? "Sign Up" : "Login"}
+
+            <CardFooter className="w-full flex flex-col gap-10 mt-auto">
+              <Button type="submit" className="w-full" onClick={updateUsername}>
+                Update username
               </Button>
-            </div>
-          </div>
-        </form>
-        </>
-      )}
-      {currentUser && (
-        <div>
-          <p>Welcome, {currentUser.email}!</p>
-          <label>
-            Username
-            <Input
-              type="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-              required
-              placeholder="Will show email if left blank"
-            />
-          </label>
-          <Button type="submit" className="w-full" onClick={updateUsername}>
-            Update username
-          </Button>
-          <Button type="button" onClick={handleSignOut}>
-            Sign Out
-          </Button>
-        </div>
-      )}
-      {status && (<p>{status}</p>)}
+              <Button variant="destructive" className="w-full" type="button" onClick={handleSignOut}>
+                Sign Out
+              </Button>
+            </CardFooter>
+          </>
+        )}
+
+        
+      </Card>
     </>
   )
+
 }
