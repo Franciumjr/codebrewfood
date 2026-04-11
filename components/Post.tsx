@@ -9,29 +9,41 @@ import Link from 'next/link';
 
 const POSTS_PER_PAGE = 5;
 
-// Updated to use your actual Supabase database column names
+// Updated SinglePost with correct Links
 const SinglePost = ({ post }: { post: any }) => {
     const [save, setSave] = useState(false);
-    // Assuming you'll add likes/saves to the DB later, defaulting to 0 for now
-    const [savedCounter, setSavedCounter] = useState(post.intSaves || 0);
+    const [savedCounter, setSavedCounter] = useState(post.intBookmarks || 0);
 
     const [like, setLike] = useState(false);
     const [likedCounter, setLikedCounter] = useState(post.intLikes || 0);
 
+    // Make sure we grab the right ID whether your database calls it 'id' or 'idPost'
+    const postId = post.idPost || post.id;
+
     return (
-        <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth flex flex-col'>
-            <div className='flex gap-4 justify-around items-center my-6'>
-                <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
+        <div className='w-64 md:w-128 flex flex-col mb-4'>
+            <Link href={`/food-details?id=${postId}`}>
+                <img 
+                    src={post.txtImageURL} 
+                    alt={post.txtTitle} 
+                    className='cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover transition-all hover:brightness-75' 
+                />
+            </Link>
+
+            <div className='text-white flex justify-center gap-8 translate-y-[-150%] translate-x-1 md:translate-x-0'>
+                
+                {/* 2. Only the title triggers the link */}
+                <Link href={`/food-details?id=${postId}`}>
+                    <h1 className='text-2xl font-bold hover:underline cursor-pointer'>{post.txtTitle}</h1>
+                </Link>
+
                 <div className='flex gap-2 items-center'>
-                    <Timer></Timer>
-                    <p className='text-md text-right'>{post.intTime} min</p> 
+                    <Timer />
+                    <p className='text-md'>{post.intTime} min</p> 
                 </div>
             </div>
-            <img src={post.txtImageURL} alt={post.txtTitle} className='mb-4 cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
-            <div className='flex justify-around gap-8 translate-x-1 md:translate-x-0 my-4'>
-                
-                
-            </div>
+
+            {/* 3. The buttons are completely separate from the links! */}
             <div className="flex justify-around items-center">
                 <div className='flex gap-2 items-center cursor-pointer'
                     onClick={() => {
@@ -80,8 +92,14 @@ const Post = () => {
         // Fetch the specific chunk of posts
         const { data, error } = await supabase
             .from('tblPosts')
-            .select('*')
-            .order('datCreatedAt', { ascending: false }) // Show newest first
+            // This grabs everything from the post, PLUS the Username from the connected tblUsers row
+            .select(`
+                *,
+                tblUsers (
+                    Username
+                )
+            `)
+            .order('datCreatedAt', { ascending: false }) 
             .range(from, to);
 
         if (error) {
@@ -111,11 +129,12 @@ const Post = () => {
     return (
         <div className="flex flex-col items-center w-full mt-24">
             {posts.map((post) => (
-                <div key={post.idPost} className="flex flex-col items-start w-64 md:w-128 mt-24">
-                    <User />    
-                    <Link href={`/food-details?id=${post.idPost}`}>
-                        <SinglePost post={post} />
-                    </Link>
+                <div key={post.idPost || post.id} className="flex flex-col items-start w-64 md:w-128 mb-16">
+                    {/* The Username fetched from our Database Join! */}
+                    <User username={post.tblUsers?.Username} />
+                    
+                    {/* Just the raw post component, no Link wrapper needed here anymore */}
+                    <SinglePost post={post} />
                 </div>
             ))}
 

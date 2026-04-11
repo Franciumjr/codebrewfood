@@ -34,7 +34,7 @@ export default function Page() {
       <div className="z-50 md:sticky md:top-0 h-fit">
         <Sidebar></Sidebar> {/**sidebar */}
       </div>
-      <Post></Post>
+      <Post />
       <div className="fixed top-4 right-4 z-50 md:z-auto flex gap-2 md:m-4 lg:p-0">
         <ModeToggle></ModeToggle> {/**light / dark mode */}
         <Link href="/email-login">

@@ -1,12 +1,11 @@
 import React from 'react'
 
-const User = () => {
+const User = ({ username }: { username: string }) => {
   return (
     <div className='flex w-2xs gap-4'>
-        <img className='rounded-full' src="https://picsum.photos/id/237/50/50" alt="" />
+        <img className='rounded-full' src="favicon.ico" alt="" />
         <div>
-            <h1 className='font-semibold'>Diddy Sahur</h1>
-            <p className='text-zinc-500'>@diddysahur</p>
+            <h1 className='font-semibold'>{username}</h1>
         </div>
         
     </div>
