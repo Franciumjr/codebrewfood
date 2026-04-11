@@ -12,7 +12,7 @@ function getEnvironmentVariables () {
     return { supabaseUrl, supabaseAnonKey };
 }
 
-export async function createSupabaseServerClient() {
+export async function createSupabaseServerClient(readOnly = false) {
     const { supabaseUrl, supabaseAnonKey } = getEnvironmentVariables()
     const cookieStore = await cookies()
 
@@ -22,6 +22,8 @@ export async function createSupabaseServerClient() {
                 return cookieStore.getAll()
             },
             setAll(cookiesToSet) {
+                if (readOnly) return
+
                 try {
                     cookiesToSet.forEach(({ name, value, options }) => {
                         cookieStore.set(name, value, options)
