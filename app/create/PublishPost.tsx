@@ -74,7 +74,7 @@ export default function PublishPost({ user }: PublishPostProps) {
                 txtImageURL: uploadedImageURL,
                 intTime: parseInt(time) || 0,
                 idUser: user.id
-            });
+            } as any);
 
         if (error) {
             setStatus("Error publishing post.");
