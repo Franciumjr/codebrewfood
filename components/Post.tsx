@@ -1,122 +1,49 @@
 "use client"
-import React, { useState } from 'react'
-import { Timer, Heart, Bookmark } from 'lucide-react';
+
+import React, { useState, useEffect, useCallback } from 'react'
+import { Timer, Heart, Bookmark, Loader2 } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import { getSupabaseBrowserClient } from "@/lib/supabase/browser-client"
 import User from './ui/user';
 
+const POSTS_PER_PAGE = 5;
 
-//dummy data
-const posts = [
-    {
-        img: 'https://picsum.photos/id/1/1024/768',
-        name: 'Butter Chicken',
-        time: '30 min',
-        likes: 300,
-        saves: 100,
-
-    },
-    {
-        img: 'https://picsum.photos/id/14/1024/768',
-        name: 'Katsu Curry Don',
-        time: '20 min',
-        likes: 200,
-        saves: 50,
-    },
-    {
-        img: 'https://picsum.photos/id/56/1024/768',
-        name: 'Dal Makhani',
-        time: '40 min',
-        likes: 400,
-        saves: 150,
-    },
-    {
-        img: 'https://picsum.photos/id/45/1024/768',
-        name: 'Pasta Carbonara',
-        time: '25 min',
-        likes: 350,
-        saves: 120,
-    },
-    {
-        img: 'https://picsum.photos/id/98/1024/768',
-        name: 'Sushi Platter',
-        time: '35 min',
-        likes: 500,
-        saves: 200,
-    },
-    {
-        img: 'https://picsum.photos/id/67/1024/768',
-        name: 'Ramen Bowl',
-        time: '30 min',
-        likes: 1000,
-        saves: 110,
-    },
-    {
-        img: 'https://picsum.photos/id/7/1024/768',
-        name: 'Pasta Carbonara',
-        time: '25 min',
-        likes: 350,
-        saves: 120,
-    },
-    {
-        img: 'https://picsum.photos/id/8/1024/768',
-        name: 'Sushi Platter',
-        time: '35 min',
-        likes: 500,
-        saves: 200,
-    },
-    {
-        img: 'https://picsum.photos/id/101/1024/768',
-        name: 'Penang Laksa',
-        time: '30 min',
-        likes: 350,
-        saves: 120,
-    },
-    {
-        img: 'https://picsum.photos/id/10/1024/768',
-        name: 'Nasi Lemak',
-        time: '30 min',
-        likes: '320',
-        saves: '110',
-    },
-];
-
-
-
-
+// Updated to use your actual Supabase database column names
 const SinglePost = ({ post }: { post: any }) => {
-    //liked / saved logic
     const [save, setSave] = useState(false);
-    const [savedCounter, setSavedCounter] = useState(Number(post.saves));
+    // Assuming you'll add likes/saves to the DB later, defaulting to 0 for now
+    const [savedCounter, setSavedCounter] = useState(post.intSaves || 0);
 
     const [like, setLike] = useState(false);
-    const [likedCounter, setLikedCounter] = useState(Number(post.likes));
+    const [likedCounter, setLikedCounter] = useState(post.intLikes || 0);
 
     return (
-        <div className=' w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth'>
-            <img src={post.img} alt="" className=' cursor-pointer rounded-3xl brightness-50 w-full aspect-square object-cover' />
+        <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth'>
+            <img src={post.txtImageURL} alt={post.txtTitle} className='cursor-pointer rounded-3xl brightness-50 w-full aspect-square object-cover' />
             <div className='text-white flex justify-center gap-8 translate-y-[-150%] translate-x-1 md:translate-x-0'>
-                <h1 className=' text-2xl font-bold'>{post.name}</h1>
+                <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
                 <div className='flex gap-2'>
-                    <Timer></Timer><p className='text-md'>{post.time}</p>
+                    <Timer />
+                    {/* Assuming time is stored as an integer of minutes */}
+                    <p className='text-md'>{post.intTime} min</p> 
                 </div>
             </div>
             <div className="flex justify-around ">
                 <div className='flex gap-2 items-center cursor-pointer'
-                    
                     onClick={() => {
                         setLike(!like);
                         setLikedCounter(like ? likedCounter - 1 : likedCounter + 1);
                     }}
                 >
-                    {like ? <Heart fill='red' color='none'></Heart> : <Heart></Heart>}
+                    {like ? <Heart fill='red' color='none' /> : <Heart />}
                     <p className='text-md'>{likedCounter}</p>
                 </div>
                 <div className='flex gap-2 items-center cursor-pointer'
-                    
                     onClick={() => {
                         setSave(!save);
                         setSavedCounter(save ? savedCounter - 1 : savedCounter + 1);
                     }}>
-                    {save ? <Bookmark fill='blue' color='none'></Bookmark> : <Bookmark></Bookmark>}
+                    {save ? <Bookmark fill='blue' color='none' /> : <Bookmark />}
                     <p className='text-md'>{savedCounter}</p>
                 </div>
             </div>
@@ -125,14 +52,77 @@ const SinglePost = ({ post }: { post: any }) => {
 }
 
 const Post = () => {
+    const supabase = getSupabaseBrowserClient();
+    
+    // State for our posts and pagination
+    const [posts, setPosts] = useState<any[]>([]);
+    const [page, setPage] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    // This sets up a 'ref' we can attach to a div. 
+    // 'inView' becomes true when that div scrolls onto the screen.
+    const { ref, inView } = useInView({
+        threshold: 0, // Trigger as soon as 1 pixel of the div is visible
+    });
+
+    const fetchPosts = useCallback(async () => {
+        if (loading || !hasMore) return;
+        setLoading(true);
+
+        const from = page * POSTS_PER_PAGE;
+        const to = from + POSTS_PER_PAGE - 1;
+
+        // Fetch the specific chunk of posts
+        const { data, error } = await supabase
+            .from('tblPosts')
+            .select('*')
+            .order('datCreatedAt', { ascending: false }) // Show newest first
+            .range(from, to);
+
+        if (error) {
+            console.error("Error fetching posts:", error);
+        } else if (data) {
+            // If we got fewer posts than requested, we've hit the end of the database
+            if (data.length < POSTS_PER_PAGE) {
+                setHasMore(false);
+            }
+            
+            // Append the new posts to the existing array
+            setPosts((prevPosts) => [...prevPosts, ...data]);
+            setPage((prevPage) => prevPage + 1);
+        }
+        
+        setLoading(false);
+    }, [page, loading, hasMore, supabase]);
+
+    // This useEffect listens to the 'inView' boolean. 
+    // Whenever the loading spinner becomes visible, fetch more posts!
+    useEffect(() => {
+        if (inView) {
+            fetchPosts();
+        }
+    }, [inView, fetchPosts]);
+
     return (
         <div className="flex flex-col items-center w-full mt-24">
             {posts.map((post) => (
-                <div key={post.img} className="flex flex-col items-start w-64 md:w-128 mt-24">
-                    <User></User>
+                <div key={post.id} className="flex flex-col items-start w-64 md:w-128 mt-24">
+                    <User />
                     <SinglePost post={post} />
                 </div>
-                ))}
+            ))}
+
+            {/* The Invisible Trigger / Loading Spinner */}
+            {hasMore && (
+                <div ref={ref} className="mt-10 mb-24 flex justify-center">
+                    <Loader2 className="animate-spin text-zinc-500 size-8" />
+                </div>
+            )}
+            
+            {!hasMore && posts.length > 0 && (
+                <p className="mt-10 mb-24 text-zinc-500">You've caught up on all posts!</p>
+            )}
         </div>
     )
 }
