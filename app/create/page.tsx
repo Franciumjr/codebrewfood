@@ -9,8 +9,7 @@ import Link from 'next/link'
 
 
 
-const page = () => {
-
+const Page = () => {
     const [imageURL, setimageURL] = useState('');
     const fileinRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
@@ -80,4 +79,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
