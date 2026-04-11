@@ -19,7 +19,7 @@ const SinglePost = ({ post }: { post: any }) => {
 
     return (
         <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth'>
-            <img src={post.txtImageURL} alt={post.txtTitle} className='cursor-pointer rounded-3xl brightness-50 w-full aspect-square object-cover' />
+            <img src={post.txtImageURL} alt={post.txtTitle} className='cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
             <div className='text-white flex justify-center gap-8 translate-y-[-150%] translate-x-1 md:translate-x-0'>
                 <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
                 <div className='flex gap-2'>
