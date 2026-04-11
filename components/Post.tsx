@@ -111,9 +111,9 @@ const Post = () => {
     return (
         <div className="flex flex-col items-center w-full mt-24">
             {posts.map((post) => (
-                <div key={post.id} className="flex flex-col items-start w-64 md:w-128 mt-24">
+                <div key={post.idPost} className="flex flex-col items-start w-64 md:w-128 mt-24">
                     <User />    
-                    <Link href="/food-details">
+                    <Link href={`/food-details?id=${post.idPost}`}>
                         <SinglePost post={post} />
                     </Link>
                 </div>
