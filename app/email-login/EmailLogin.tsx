@@ -158,14 +158,14 @@ export default function EmailLogin({ user }: EmailLoginProps) {
             <div className="flex flex-col items-center gap-6 w-full max-w-sm p-12 flex-grow">
               <p>Welcome, {currentUser.email}!</p>
               <label>
-                Username
+                Change Username
                 <Input
                 className="mt-5"
                   type="username"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                   required
-                  placeholder="Will show email if left blank"
+                  placeholder="Will be Unnamed Taster if left blank"
                 />
               </label>
 

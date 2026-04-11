@@ -24,7 +24,7 @@ const ProfilePage = () => {
                 {/**nav bar */}
                 <nav className='flex justify-between items-center font-bold'>
                     <Link href="/"><ChevronLeft></ChevronLeft></Link>
-                    <h1 style={{ fontSize: '44x', fontWeight: "bold" }}>Joshua Kulik</h1>
+                    <h1 style={{ fontSize: '44x', fontWeight: "bold" }}>User</h1>
                     <Settings></Settings>
                 </nav>
 

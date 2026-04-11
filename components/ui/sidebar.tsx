@@ -12,7 +12,7 @@ const sidebars = [
         href: "/",
         icon: House,
     },
-    {
+/*    {
         title: "Search",
         href: "/search",
         icon: Search,
@@ -21,22 +21,22 @@ const sidebars = [
         title: "Notifications",
         href: "/notifications",
         icon: Bell,
-    },
+    },*/
     {
         title: "Create",
         href: "/create",
         icon: Plus,
     },
     {
-        title: "Profile",
-        href: "/profile",
+        title: "Account",
+        href: "/email-login",
         icon: User,
     },
-    {
+/*    {
         title: "Settings",
         href: "/settings",
         icon: Settings,
-    },
+    },*/
 ]
 
 

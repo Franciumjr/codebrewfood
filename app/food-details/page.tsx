@@ -86,11 +86,13 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
 
                 <div className="flex gap-10 mt-auto pt-6">
                     <div className="flex items-center gap-3">
-                        <Heart className="w-8 h-8 text-white" />
+                        {/* Swapped text-white for text-destructive to give it a nice theme-aware red */}
+                        <Heart className="w-8 h-8 text-destructive fill-destructive" />
                         <span className="text-2xl font-bold">{post.intLikes || 0}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Bookmark className="w-8 h-8 text-white" />
+                        {/* Swapped text-white for text-primary to give it your theme's main accent color */}
+                        <Bookmark className="w-8 h-8 text-primary fill-primary" />
                         <span className="text-2xl font-bold">{post.intBookmarks || 0}</span>
                     </div>
                 </div>
