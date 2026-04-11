@@ -5,6 +5,7 @@ import { Timer, Heart, Bookmark, Loader2 } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser-client"
 import User from './ui/user';
+import Link from 'next/link';
 
 const POSTS_PER_PAGE = 5;
 
@@ -18,15 +19,18 @@ const SinglePost = ({ post }: { post: any }) => {
     const [likedCounter, setLikedCounter] = useState(post.intLikes || 0);
 
     return (
-        <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth'>
-            <img src={post.txtImageURL} alt={post.txtTitle} className='mb-4 cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
-            <div className='text-white flex justify-between gap-8 translate-x-1 md:translate-x-0 my-4'>
+        <div className='w-64 h-[70vh] md:w-128 md:h-[100vh] scroll-smooth flex flex-col'>
+            <div className='flex gap-4 justify-between items-center my-6'>
                 <h1 className='text-2xl font-bold'>{post.txtTitle}</h1>
-                <div className='flex gap-2'>
-                    <Timer />
-                    {/* Assuming time is stored as an integer of minutes */}
-                    <p className='text-md'>{post.intTime} min</p> 
+                <div className='flex gap-2 items-center'>
+                    <Timer></Timer>
+                    <p className='text-md text-right'>{post.intTime} min</p> 
                 </div>
+            </div>
+            <img src={post.txtImageURL} alt={post.txtTitle} className='mb-4 cursor-pointer rounded-3xl brightness-90 w-full aspect-square object-cover' />
+            <div className='flex justify-around gap-8 translate-x-1 md:translate-x-0 my-4'>
+                
+                
             </div>
             <div className="flex justify-around items-center">
                 <div className='flex gap-2 items-center cursor-pointer'
@@ -108,8 +112,10 @@ const Post = () => {
         <div className="flex flex-col items-center w-full mt-24">
             {posts.map((post) => (
                 <div key={post.id} className="flex flex-col items-start w-64 md:w-128 mt-24">
-                    <User />
-                    <SinglePost post={post} />
+                    <User />    
+                    <Link href="/food-details">
+                        <SinglePost post={post} />
+                    </Link>
                 </div>
             ))}
 
