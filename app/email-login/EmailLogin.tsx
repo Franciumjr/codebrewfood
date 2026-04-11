@@ -63,7 +63,7 @@ export default function EmailLogin({ user }: EmailLoginProps) {
       if (error) {
         setStatus(error.message)
       } else {
-        setStatus("Signup successful! Please check your email for a confirmation link.")
+        setStatus("Signup successful!")
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
