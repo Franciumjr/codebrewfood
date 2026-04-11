@@ -4,7 +4,6 @@ import { ModeToggle } from '@/components/ModeToggle'
 import { ChevronLeft, Heart, Bookmark, Timer, Users, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 
-// page props interface for Next.js Server Components with search parameters
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -39,8 +38,6 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
     )
   }
 
-  // Casting as any for txtImageURL bypassing missing local DB type definitions. 
-  // It will fall back if undefined.
   const imageUrl = (post as any).txtImageURL;
 
   return (
@@ -57,9 +54,7 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
       
       <div className="max-w-5xl mx-auto px-4 py-20 flex flex-col gap-10">
         
-        {/* header section */}
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            {/* conditional handling */}
             {imageUrl ? (
                 <img src={imageUrl} alt={post.txtTitle || "Recipe Image"} className="w-full md:w-1/2 aspect-square object-cover rounded-3xl" />
             ) : (
@@ -99,7 +94,6 @@ export default async function FoodDetailsPage({ searchParams }: PageProps) {
             </div>
         </div>
 
-        {/* Recipe Body text fields */}
         <div className="flex flex-col md:flex-row gap-12 mt-8">
             <div className="flex-1 flex w-[90vw] md:w-[30vw] h-fit md:h-fit flex-col gap-6">
                 <h2 className="text-3xl font-semibold mb-2 pb-2 inline-flex items-center border-b">

@@ -25,7 +25,7 @@ export default function PublishPost({ user }: PublishPostProps) {
     const [description, setDescription] = useState("");
     const [ingredients, setIngredients] = useState("");
     const [instructions, setInstructions] = useState("");
-    // Storing as strings locally prevents 'NaN' quirks when users clear the textarea
+
     const [servingSize, setServingSize] = useState(""); 
     const [time, setTime] = useState("");
 
@@ -34,7 +34,7 @@ export default function PublishPost({ user }: PublishPostProps) {
     const supabase = getSupabaseBrowserClient();
 
     async function handlePublish(e: React.FormEvent) {
-        e.preventDefault(); // Prevents the page from refreshing on submit
+        e.preventDefault();
         setIsSubmitting(true);
         setStatus("Publishing...");
 
@@ -46,7 +46,6 @@ export default function PublishPost({ user }: PublishPostProps) {
 
         let uploadedImageURL = "";
 
-        // 1. Only upload the image when the user clicks "Publish"
         if (file) {
             try {
                 setStatus("Uploading image...");
@@ -63,7 +62,6 @@ export default function PublishPost({ user }: PublishPostProps) {
             return;
         }
 
-        // 2. Save the final post to Supabase
         const { error } = await supabase.from("tblPosts")
             .insert({ 
                 txtTitle: title,
@@ -81,7 +79,6 @@ export default function PublishPost({ user }: PublishPostProps) {
             console.error(error);
         } else {
             setStatus("Post published successfully!");
-            // Optional: You can clear the form states here or redirect the user
         }
         
         setIsSubmitting(false);
@@ -110,7 +107,6 @@ export default function PublishPost({ user }: PublishPostProps) {
         return data.secure_url;
     }
 
-    // Handles generating a temporary local URL so the user can preview what they selected
     const handleImageSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
@@ -170,7 +166,6 @@ export default function PublishPost({ user }: PublishPostProps) {
                     />
                 </div>
                 
-                {/* Button automatically acts as a submit trigger for the form */}
                 <Button disabled={isSubmitting} size="lg" type="submit">
                     {isSubmitting ? "Publishing..." : "Publish"}
                 </Button>
